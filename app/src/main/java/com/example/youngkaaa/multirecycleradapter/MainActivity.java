@@ -3,6 +3,7 @@ package com.example.youngkaaa.multirecycleradapter;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.View;
@@ -26,13 +27,13 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
         mRecyclerView = (RecyclerView) findViewById(R.id.recyclerViewMain);
         final GridLayoutManager gridLayoutManager=new GridLayoutManager(this,3);
-        mRecyclerView.setLayoutManager(gridLayoutManager);
-        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
-            @Override
-            public int getSpanSize(int position) {
-                return mMutiAdapter.isTitleView(position)?gridLayoutManager.getSpanCount():1;
-            }
-        });
+        mRecyclerView.setLayoutManager(new LinearLayoutManager(this));
+//        gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
+//            @Override
+//            public int getSpanSize(int position) {
+//                return mMutiAdapter.isTitleView(position)?gridLayoutManager.getSpanCount():1;
+//            }
+//        });
         mMutiAdapter = new MyMultiAdapter(this, initListKeys(), initMapData());
 
         mRecyclerView.setAdapter(mMutiAdapter);

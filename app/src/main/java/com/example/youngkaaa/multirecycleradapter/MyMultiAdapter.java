@@ -42,15 +42,16 @@ public class MyMultiAdapter extends MultiBaseRecyclerAdapter<TitleBean,ContentBe
 
     @Override
     public int getContentLayoutId() {
-        return R.layout.recycler_item;
+//        return R.layout.recycler_item;
+        return R.layout.recycler_item_linear;
     }
 
     @Override
     public void bindData(int type, BaseViewHolder holder, Object data) {
         TextView textViewLeft=holder.getViewById(R.id.textViewTitleLeft);
         TextView textViewRight=holder.getViewById(R.id.textViewTitleRight);
-        TextView textViewContent=holder.getViewById(R.id.textViewRecyclerItemContent);
-        ImageView imageView=holder.getViewById(R.id.imageViewContentIco);
+        TextView textViewContent=holder.getViewById(R.id.textViewRecyclerItemContentLinear);
+        ImageView imageView=holder.getViewById(R.id.imageViewContentIcoLinear);
         if(type==TYPE_TITLE){
             final TitleBean bean= (TitleBean) data;
             textViewLeft.setText(bean.getLeftTitle());
