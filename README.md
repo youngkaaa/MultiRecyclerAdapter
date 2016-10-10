@@ -250,6 +250,10 @@ gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 
 ![](https://github.com/youngkaaa/MultiRecyclerAdapter/blob/master/app/pics/screens.gif)
 
+
+![](https://github.com/youngkaaa/MultiRecyclerAdapter/blob/master/app/pics/screens_linear.gif)
+
+更多样式请自行实现！
 欢迎大神提意见，你有任何好的pr都欢迎！
 
 如果该项目对你有用的话，给个`star`以示鼓励吧！你也可以顺便围观一下我的其他项目谢谢！
