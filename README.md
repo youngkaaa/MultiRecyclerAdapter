@@ -4,7 +4,7 @@
 
 >    MultiRecyclerAdapter for RecyclerView
 
-2. [HeaderFooterAdapter](https://github.com/youngkaaa/MultiRecyclerAdapter/blob/master/README.md#下面介绍第二个headerfooteradapter)
+2. [HeaderFooterAdapter](https://github.com/youngkaaa/MultiRecyclerAdapter#下面介绍第二个headerfooteradapter)
 
 >    Add Footer and Header for your adapter!
 
