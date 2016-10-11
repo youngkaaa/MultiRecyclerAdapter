@@ -1,5 +1,11 @@
-# MultiRecyclerAdapter
+# 本库包括两个Adapter适配
+
+1. MultiRecyclerAdapter
 MultiRecyclerAdapter for RecyclerView
+2. HeaderFooterAdapter
+Add Footer and Header for your adapter!
+
+下面先介绍第一个`MultiRecyclerAdapter`
 
 模仿b站列表的Adapter，适用于RecyclerView.
 
@@ -254,6 +260,29 @@ gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 ![](https://github.com/youngkaaa/MultiRecyclerAdapter/blob/master/app/pics/screens_linear.gif)
 
 更多样式请自行实现！
+
+
+
+下面介绍第二个`HeaderFooterAdapter`
+
+下面先贴出图：
+
+![]()
+
+然后，用法很简单，就像下面这样(只贴出部分有关代码)：
+
+```
+mMutiAdapter = new MyMultiAdapter(this, initListKeys(), initMapData());
+        headerFooterAdapter=new HeaderFooterAdapter(this,mMutiAdapter);
+        headerFooterAdapter.setFooterResId(R.layout.footer_layout);
+        headerFooterAdapter.setHeaderResId(R.layout.header_layout);
+        mRecyclerView.setAdapter(headerFooterAdapter);
+```
+
+就是先调用构造方法，将你已经实现了的 `Adapter`传入，这样做的优点就是几乎不用修改你原来的逻辑，只需要给你原先的`RecyclerAdapter`外面再包裹一个`Adapter`就行了，然后设置该`Adapter`给你的`RecyclerView`，这样原来的逻辑都在，就多了上面两三行代码就让你的`RecyclerView`有了`Header`和`Footer`。更多用法请查看项目内的Demo.
+
+
+
 欢迎大神提意见，你有任何好的pr都欢迎！
 
 如果该项目对你有用的话，给个`star`以示鼓励吧！你也可以顺便围观一下我的其他项目谢谢！
