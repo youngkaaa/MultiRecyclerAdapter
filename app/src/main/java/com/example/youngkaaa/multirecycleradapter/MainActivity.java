@@ -19,6 +19,7 @@ import java.util.Map;
 public class MainActivity extends AppCompatActivity {
     private RecyclerView mRecyclerView;
     private MyMultiAdapter mMutiAdapter;
+    private HeaderFooterAdapter headerFooterAdapter;
 
 
     @Override
@@ -35,8 +36,13 @@ public class MainActivity extends AppCompatActivity {
 //            }
 //        });
         mMutiAdapter = new MyMultiAdapter(this, initListKeys(), initMapData());
+        headerFooterAdapter=new HeaderFooterAdapter(this,mMutiAdapter);
+        headerFooterAdapter.setFooterResId(R.layout.footer_layout);
+        headerFooterAdapter.setHeaderResId(R.layout.header_layout);
 
-        mRecyclerView.setAdapter(mMutiAdapter);
+//        mRecyclerView.setAdapter(mMutiAdapter);
+        mRecyclerView.setAdapter(headerFooterAdapter);
+
 
 
         mMutiAdapter.setItemClickedListener(new OnItemClickedListener() {
