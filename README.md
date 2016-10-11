@@ -1,11 +1,11 @@
 # 本库包括两个Adapter适配
 
-1. MultiRecyclerAdapter
+1. [MultiRecyclerAdapter]()
 MultiRecyclerAdapter for RecyclerView
-2. HeaderFooterAdapter
+2. [HeaderFooterAdapter]()
 Add Footer and Header for your adapter!
 
-下面先介绍第一个`MultiRecyclerAdapter`
+## 下面先介绍第一个`MultiRecyclerAdapter`
 
 模仿b站列表的Adapter，适用于RecyclerView.
 
@@ -263,11 +263,11 @@ gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 
 
 
-下面介绍第二个`HeaderFooterAdapter`
+### 下面介绍第二个`HeaderFooterAdapter`
 
 下面先贴出图：
 
-![]()
+![](https://github.com/youngkaaa/MultiRecyclerAdapter/blob/master/app/pics/screens_lheader.gif)
 
 然后，用法很简单，就像下面这样(只贴出部分有关代码)：
 
