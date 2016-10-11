@@ -9,6 +9,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Toast;
 
+import com.example.youngkaaa.muti_recycler_adapter.HeaderFooterAdapter;
 import com.example.youngkaaa.muti_recycler_adapter.OnItemClickedListener;
 
 import java.util.ArrayList;
