@@ -235,7 +235,7 @@ public class TitleBean {
     }
 ```
 
-注意：
+### 注意：
 
 1. 如果你使用第二个构造方法，那么要注意传入的键的数量和`Map<>`中对应的值的数量要相同，否则会抛出一个`RuntimeException`，内容为：Key's size should be equal to the Map's key size!
 
@@ -266,9 +266,8 @@ gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 更多样式请自行实现！
 
 
-更新 2016-11-1 10:14:48：
+### 更新 2016-11-1 10:14:48：增加对于`Border`的判断
 
-增加对于`Border`的判断
 
 比如我要实现时间线的效果，此时就需要获得每个`Content`的开始和结束，用以控制时间线的显示或者隐藏，下面先贴一下一个实际的Demo截图：
 
@@ -311,12 +310,43 @@ public static final int OTHER_BORDER = 5;
 ```
 
 看这个简单的图解：
-![]()
+
+![](https://github.com/youngkaaa/MultiRecyclerAdapter/blob/master/app/pics/guide.png)
 
 上面1处就是`TOP_BORDER`,2处就是`BOTTOM_BORDER`，3处就是`OTHER_BORDER`
 
+即当当前要绑定的item是每个`Content`中的第一个时，你通过itemResult.getBorder()获得的值就是:TOP_BORDER
+当时每个`Content`中的最后一个时，你通过itemResult.getBorder()获得的值就是:BOTTOM_BORDER
+除此之外其它的就都是`OTHER_BORDER`
 
-### 下面介绍第二个`HeaderFooterAdapter`
+所以在onBind()方法实现中可以是这样的：
+
+```
+@Override
+    public void bindData(BaseViewHolder holder, ItemResult result) {
+        if (result.getType() == TYPE_TITLE) {
+        
+             //bind your data here!
+             
+        } else {
+            final BookItem item = (BookItem) result.getData();
+            
+            //bind your data here!
+         
+            if(result.getBorder()==TOP_BORDER){
+               //TOP_BORDER
+            }else if(result.getBorder()==BOTTOM_BORDER){
+                //BOTTOM_BORDER
+            }else {
+                //OTHER_BORDER
+            }
+        }
+    }
+```
+
+这里需要注意的一点就是：当你在控制每个Item中的某些控件可见度时，需要考虑到RecyclerView的重用性哦，不然会出现item中控件可见性混乱的情况。千万注意！
+
+## 下面介绍第二个`HeaderFooterAdapter`
 
 下面先贴出图：
 
