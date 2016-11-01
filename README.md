@@ -1,10 +1,10 @@
 # 本库包括两个Adapter适配
 
-1. [MultiRecyclerAdapter](https://github.com/youngkaaa/MultiRecyclerAdapter#下面先介绍第一个multirecycleradapter)
+*  [MultiRecyclerAdapter](https://github.com/youngkaaa/MultiRecyclerAdapter#下面先介绍第一个multirecycleradapter)
 
 >    MultiRecyclerAdapter for RecyclerView
 
-2. [HeaderFooterAdapter](https://github.com/youngkaaa/MultiRecyclerAdapter#下面介绍第二个headerfooteradapter)
+*  [HeaderFooterAdapter](https://github.com/youngkaaa/MultiRecyclerAdapter#下面介绍第二个headerfooteradapter)
 
 >    Add Footer and Header for your adapter!
 
@@ -265,6 +265,55 @@ gridLayoutManager.setSpanSizeLookup(new GridLayoutManager.SpanSizeLookup() {
 
 更多样式请自行实现！
 
+
+更新 2016-11-1 10:14:48：
+
+增加对于`Border`的判断
+
+比如我要实现时间线的效果，此时就需要获得每个`Content`的开始和结束，用以控制时间线的显示或者隐藏，下面先贴一下一个实际的Demo截图：
+
+![](https://github.com/youngkaaa/MultiRecyclerAdapter/blob/master/app/pics/screen_new.png)
+
+上面这个实例是实现时间线的效果，左边会有时间线用以连接每个图标，以达到时间`线`的效果。此时我们就需要把每个`Content`的第一个的上面的时间线和最后一个的下面的时间线隐藏掉。所以我对原先的`MultiRecyclerAdapter`进行了新的封装，新提供了一个内部类`ItemResult`，它内部的实现是这样的：
+
+```
+public class ItemResult {
+        private int type;
+        private Object data;
+        private int border;
+
+        public ItemResult(int type, Object data, int border) {
+            this.type = type;
+            this.data = data;
+            this.border = border;
+        }
+
+        public int getBorder() {
+            return border;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public Object getData() {
+            return data;
+        }
+    }
+```
+
+第一个`type`和第二个`data`原先的版本中存在了的，代表的意思和上面的一样。新增了一个`border`属性。它有三种取值：
+
+```
+public static final int TOP_BORDER = 3;
+public static final int BOTTOM_BORDER = 4;
+public static final int OTHER_BORDER = 5;
+```
+
+看这个简单的图解：
+![]()
+
+上面1处就是`TOP_BORDER`,2处就是`BOTTOM_BORDER`，3处就是`OTHER_BORDER`
 
 
 ### 下面介绍第二个`HeaderFooterAdapter`
