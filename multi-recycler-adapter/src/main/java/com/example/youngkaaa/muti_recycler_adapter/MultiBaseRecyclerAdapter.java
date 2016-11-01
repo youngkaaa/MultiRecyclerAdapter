@@ -2,6 +2,7 @@ package com.example.youngkaaa.muti_recycler_adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -17,17 +18,48 @@ import java.util.Map;
  */
 
 public abstract class MultiBaseRecyclerAdapter<K, V> extends RecyclerView.Adapter {
+    private static final String TAG = "MultiBaseAdapter";
     public static final int TYPE_TITLE = 1;
     public static final int TYPE_OTHER = 2;
 
-    private Context mContext;
+    public static final int TOP_BORDER = 3;
+    public static final int BOTTOM_BORDER = 4;
+    public static final int OTHER_BORDER = 5;
+
+
+    public class ItemResult {
+        private int type;
+        private Object data;
+        private int border;
+
+        public ItemResult(int type, Object data, int border) {
+            this.type = type;
+            this.data = data;
+            this.border = border;
+        }
+
+        public int getBorder() {
+            return border;
+        }
+
+        public int getType() {
+            return type;
+        }
+
+        public Object getData() {
+            return data;
+        }
+    }
+
     private Map<K, List<V>> mData;
     private List<K> mKeys = new ArrayList<>();
     private LayoutInflater mInflater;
+    private Context mContext;
 
     public MultiBaseRecyclerAdapter(Context context, Map<K, List<V>> data) {
         this.mContext = context;
         this.mData = data;
+        this.mContext = context;
         mInflater = LayoutInflater.from(context);
         for (Map.Entry<K, List<V>> entry : mData.entrySet()) {
             K key = entry.getKey();
@@ -38,12 +70,13 @@ public abstract class MultiBaseRecyclerAdapter<K, V> extends RecyclerView.Adapte
     public MultiBaseRecyclerAdapter(Context context, List<K> keys, Map<K, List<V>> data) {
         this.mContext = context;
         this.mData = data;
+        this.mContext = context;
         this.mInflater = LayoutInflater.from(context);
         this.mKeys = keys;
         for (Map.Entry<K, List<V>> entry : mData.entrySet()) {
             K key = entry.getKey();
         }
-        if(mData.entrySet().size()!=mKeys.size()){
+        if (mData.entrySet().size() != mKeys.size()) {
             throw new RuntimeException("Key's size should be equal to the Map's key size!");
         }
     }
@@ -52,7 +85,7 @@ public abstract class MultiBaseRecyclerAdapter<K, V> extends RecyclerView.Adapte
 
     public abstract int getContentLayoutId();
 
-    public abstract void bindData(int type, BaseViewHolder holder, Object data);
+    public abstract void bindData(BaseViewHolder holder, ItemResult itemResult);
 
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
@@ -66,10 +99,34 @@ public abstract class MultiBaseRecyclerAdapter<K, V> extends RecyclerView.Adapte
     @Override
     public void onBindViewHolder(RecyclerView.ViewHolder holder, final int position) {
         if (getItemViewType(position) == TYPE_TITLE) {
-            bindData(TYPE_TITLE, (BaseViewHolder) holder, mKeys.get(getKeyIndexByPosition(position)));
+            bindData((BaseViewHolder) holder, new ItemResult(TYPE_TITLE, mKeys.get(getKeyIndexByPosition(position)), OTHER_BORDER));
+//            bindData(TYPE_TITLE, (BaseViewHolder) holder, mKeys.get(getKeyIndexByPosition(position)));
         } else {
-            bindData(TYPE_OTHER, (BaseViewHolder) holder, getValueByPosition(position));
+            int borderType = checkPositionBorderType(position);
+            bindData((BaseViewHolder) holder, new ItemResult(TYPE_OTHER, getValueByPosition(position), borderType));
+//            bindData(TYPE_OTHER, (BaseViewHolder) holder, getValueByPosition(position));
         }
+    }
+
+    private int checkPositionBorderType(int position) {
+        for (int i = 0; i < mKeys.size(); i++) {
+            if (position == getTitlePositionByItemIndex(i) + 1) {
+                Log.d(TAG, "getTitlePositionByItemIndex+1=> #" + (getTitlePositionByItemIndex(i) + 1) + "#  TOP_BORDER on #" + position);
+                return TOP_BORDER;
+            }
+
+            if (position == (getTitlePositionByItemIndex(i) - 1)) {
+                Log.d(TAG, "getTitlePositionByItemIndex-1=> #" + (getTitlePositionByItemIndex(i) - 1) + "# BOTTOM_BORDER on " + position);
+                return BOTTOM_BORDER;
+            }
+
+            if (getTotalItemCount() - 1 == position) {
+                return BOTTOM_BORDER;
+            }
+
+
+        }
+        return OTHER_BORDER;
     }
 
     @Override
@@ -82,9 +139,9 @@ public abstract class MultiBaseRecyclerAdapter<K, V> extends RecyclerView.Adapte
         return getTotalItemCount();
     }
 
-    public boolean isTitleView(int position){
-        for(int i=0;i<mKeys.size();i++){
-            if(position==getTitlePositionByItemIndex(i)){
+    public boolean isTitleView(int position) {
+        for (int i = 0; i < mKeys.size(); i++) {
+            if (position == getTitlePositionByItemIndex(i)) {
                 return true;
             }
         }
@@ -92,6 +149,9 @@ public abstract class MultiBaseRecyclerAdapter<K, V> extends RecyclerView.Adapte
     }
 
 
+    public Context getContext() {
+        return mContext;
+    }
 
     private int judgeTypeByPosition(int position) {
         for (int i = 0; i < mKeys.size(); i++) {
@@ -145,7 +205,6 @@ public abstract class MultiBaseRecyclerAdapter<K, V> extends RecyclerView.Adapte
     }
 
 
-
     private List<V> getListValuesByKey(K key) {
         return this.mData.get(key);
     }
@@ -159,9 +218,7 @@ public abstract class MultiBaseRecyclerAdapter<K, V> extends RecyclerView.Adapte
     }
 
 
-
-
-    public class BaseViewHolder extends RecyclerView.ViewHolder{
+    public class BaseViewHolder extends RecyclerView.ViewHolder {
         private View rootView;
         private SparseArray<View> views = new SparseArray<>();
 
@@ -182,4 +239,11 @@ public abstract class MultiBaseRecyclerAdapter<K, V> extends RecyclerView.Adapte
 
     }
 
+    public List<K> getKeys() {
+        return mKeys;
+    }
+
+    public Map<K, List<V>> getData() {
+        return mData;
+    }
 }

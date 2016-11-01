@@ -47,13 +47,13 @@ public class MyMultiAdapter extends MultiBaseRecyclerAdapter<TitleBean,ContentBe
     }
 
     @Override
-    public void bindData(int type, BaseViewHolder holder, Object data) {
+    public void bindData(BaseViewHolder holder, MultiBaseRecyclerAdapter<TitleBean, ContentBean>.ItemResult itemResult) {
         TextView textViewLeft=holder.getViewById(R.id.textViewTitleLeft);
         TextView textViewRight=holder.getViewById(R.id.textViewTitleRight);
         TextView textViewContent=holder.getViewById(R.id.textViewRecyclerItemContentLinear);
         ImageView imageView=holder.getViewById(R.id.imageViewContentIcoLinear);
-        if(type==TYPE_TITLE){
-            final TitleBean bean= (TitleBean) data;
+        if(itemResult.getType()==TYPE_TITLE){
+            final TitleBean bean= (TitleBean) itemResult.getData();
             textViewLeft.setText(bean.getLeftTitle());
             textViewRight.setText(bean.getRightTitle());
             textViewLeft.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +74,7 @@ public class MyMultiAdapter extends MultiBaseRecyclerAdapter<TitleBean,ContentBe
             });
 
         }else{
-            final ContentBean bean= (ContentBean) data;
+            final ContentBean bean= (ContentBean) itemResult.getData();
             textViewContent.setText(bean.getContent());
             Glide.with(mContext).load(bean.getPicUrl())
                     .centerCrop().into(imageView);
@@ -88,4 +88,5 @@ public class MyMultiAdapter extends MultiBaseRecyclerAdapter<TitleBean,ContentBe
             });
         }
     }
+
 }
